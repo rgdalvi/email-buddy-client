@@ -1,17 +1,43 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import ReactMarkdown from "react-markdown";
+import SignInButton from "../components/SignInButton";
 
 export default function Page() {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
+  const router = useRouter();
+  const { data: session, status } = useSession();
+
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.push("/");
+    }
+  }, [status, router]);
 
   // Function to handle sending a message
-  const sendMessage = (event) => {
+  const sendMessage = async (event) => {
     event.preventDefault();
     if (input.trim()) {
+      const response = await fetch("http://localhost:8000/api/emails/search", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          query: input,
+          n_results: 2,
+        }),
+      });
+
+      const data = await response.json();
+      console.log(data);
+
       setMessages([
         ...messages,
-        { query: input, response: "Response goes here..." },
+        { query: input, response: data.summary || "No response" },
       ]);
       setInput("");
     }
@@ -19,6 +45,11 @@ export default function Page() {
 
   return (
     <div className="flex flex-col justify-center items-center h-screen bg-gray-900 text-gray-100">
+      {/* SignInButton at the top right */}
+      <div className="absolute top-4 right-4">
+        <SignInButton />
+      </div>
+
       {/* Query and Results Section */}
       <div className="flex-grow p-4 overflow-y-auto">
         {messages.map((msg, index) => (
@@ -29,7 +60,7 @@ export default function Page() {
             </div>
             {/* Response */}
             <div className="bg-gray-800 p-3 rounded-md text-gray-300">
-              {msg.response}
+              <ReactMarkdown>{msg.response}</ReactMarkdown>
             </div>
           </div>
         ))}
