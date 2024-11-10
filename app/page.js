@@ -10,6 +10,7 @@ import { RiLightbulbFlashFill } from "react-icons/ri";
 import { FaBoltLightning } from "react-icons/fa6";
 import { MdPrivacyTip } from "react-icons/md";
 import { BiBot } from "react-icons/bi";
+import Loader from "./components/Loader";
 
 export default function Home() {
   const router = useRouter();
@@ -42,7 +43,9 @@ export default function Home() {
     }
   }, [session]);
 
-  return (
+  return loading ? (
+    <Loader />
+  ) : (
     <div className="min-h-screen flex flex-col justify-center items-center bg-[conic-gradient(at_bottom_left,_var(--tw-gradient-stops))] from-fuchsia-300 via-green-400 to-rose-700">
       <BiBot size={40} color="#4a044e" className="text-center" />
       <h1 className="text-5xl font-bold mb-4 text-center text-white bg-clip-text text-transparent rounded bg-[conic-gradient(at_bottom_left,_var(--tw-gradient-stops))] from-fuchsia-800 via-sky-600 to-violet-800">
@@ -69,7 +72,7 @@ export default function Home() {
           <RiLightbulbFlashFill size={20} color="#fff" />
           <p className="text-lg font-bold mt-4">Smart Search</p>
           <p className="font-light">
-            Just ask, and let our app pinpoint exactly what you need
+            Just ask, and let our app pinpoint exactly what you need.
           </p>
         </div>
         <div className="bg-opacity-40 p-4 w-1/3 rounded-2xl cursor-pointer hover:scale-105 duration-200 ease-in-out bg-gradient-to-t from-rose-700 to-pink-600 ">
@@ -77,7 +80,7 @@ export default function Home() {
           <p className="text-lg font-bold mt-4">Fast Results</p>
           <p className="font-light">
             Efficiently powered by the latest in AI and vector database
-            technology
+            technology.
           </p>
         </div>
         <div className="bg-white bg-opacity-40 p-4 w-1/3 hover:scale-105 duration-200 ease-in-out rounded-xl cursor-pointer bg-gradient-to-t from-purple-800 via-violet-900 to-purple-800 ">
@@ -88,7 +91,6 @@ export default function Home() {
           </p>
         </div>
       </section>
-      {loading && <p>Loading, fetching and saving emails to vector db...</p>}
     </div>
   );
 }
