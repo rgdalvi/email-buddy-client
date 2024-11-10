@@ -54,34 +54,46 @@ export default function Page() {
       </div>
 
       {/* Query and Results Section */}
-      {messages?.map((msg, index) => (
-        <section key={index}>
-          <div className="flex-grow w-full max-w-5xl p-4 overflow-y-auto">
-            <div className="mb-6">
-              {/* Query */}
-              <div className="w-full flex flex-row justify-between items-start">
-                <div className="bg-blue-600 bg-opacity-80 p-2 rounded-full border-solid border-2 mr-2">
-                  <TbUserHexagon size={20} color="#fff"/>
+
+      {!messages.length ? (
+        <div className="flex flex-row justify-between items-center">
+          <div className="p-2 rounded-full border-solid border-2 mr-2 bg-gradient-to-b from-orange-500 to-yellow-300">
+            <BiBot size={20} color="#fff" />
+          </div>
+          <div className="">
+            Inbox looking a little busy? Let’s sort it out!
+          </div>
+        </div>
+      ) : (
+        messages?.map((msg, index) => (
+          <section key={index}>
+            <div className="flex-grow w-full max-w-5xl p-4 overflow-y-auto">
+              <div className="mb-6">
+                {/* Query */}
+                <div className="w-full flex flex-row justify-between items-start">
+                  <div className="bg-blue-600 bg-opacity-80 p-2 rounded-full border-solid border-2 mr-2">
+                    <TbUserHexagon size={20} color="#fff" />
+                  </div>
+                  <div className="w-full bg-blue-600 bg-opacity-80 p-3 rounded-t-lg mb-1 text-white font-medium">
+                    {msg.query}
+                  </div>
                 </div>
-                <div className="w-full bg-blue-600 bg-opacity-80 p-3 rounded-t-lg mb-1 text-white font-medium">
-                  {msg.query}
-                </div>
-              </div>
-              {/* Response */}
-              <div className="w-full flex flex-row justify-between items-start">
-                <div className="p-2 rounded-full border-solid border-2 mr-2 bg-gradient-to-b from-orange-500 to-yellow-300">
-                  <BiBot size={20} color="#fff" />
-                </div>
-                <div className="bg-white p-4 rounded-b-lg shadow-md bg-opacity-30">
-                  <ReactMarkdown className="prose max-w-none ">
-                    {msg.response}
-                  </ReactMarkdown>
+                {/* Response */}
+                <div className="w-full flex flex-row justify-between items-start">
+                  <div className="p-2 rounded-full border-solid border-2 mr-2 bg-gradient-to-b from-orange-500 to-yellow-300">
+                    <BiBot size={20} color="#fff" />
+                  </div>
+                  <div className="bg-white p-4 rounded-b-lg shadow-md bg-opacity-30">
+                    <ReactMarkdown className="prose max-w-none ">
+                      {msg.response}
+                    </ReactMarkdown>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </section>
-      ))}
+          </section>
+        ))
+      )}
 
       {/* Chat Input Box */}
       <div className="fixed bottom-0 p-4 bg-opacity-30 bg-white border-t border-gray-200 w-full max-w-4xl rounded-t-2xl shadow-lg">
