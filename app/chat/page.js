@@ -31,7 +31,7 @@ export default function Page() {
         },
         body: JSON.stringify({
           query: input,
-          n_results: 2,
+          n_results: 5,
         }),
       });
 
